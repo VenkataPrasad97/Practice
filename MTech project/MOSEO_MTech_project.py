@@ -1,12 +1,11 @@
-# %%
+
 import random
 import numpy as np
 import pandas as pd
-import matplotlib as plt
+import matplotlib.pyplot as plt
 #random.seed(4)
 #according to fillrate calc other transport qty
-
-# %%
+sno=[]
 # Problem paramters
 I=4
 J=4
@@ -19,15 +18,13 @@ R=4
 S=4
 nvar=5
 nobj=2
-varmax=200
+varmax=500
 varmin=100
 #check
 
-# %%
 a=np.random.randint(100,150,size=5)
 a
 
-# %%
 #parameters
 pci=np.random.randint(100,150,size=I)
 #fixed cost
@@ -121,7 +118,6 @@ dri=np.random.randint(100,150,size=(R,I))
 dpj=np.random.randint(100,150,size=(P,J))
 dnk=np.random.randint(100,150,size=(N,K))
 
-# %%
 #Hyper paramters
 #alpha
 al=0.1
@@ -154,8 +150,6 @@ maxn=2
 maxp=2
 maxr=1
 maxs=1
-
-# %%
 #Cost function
 def calc_objective1(lst_pq):
     p_q=round(np.average(lst_pq))
@@ -357,8 +351,6 @@ def calc_objective1(lst_pq):
     z1=zfc+zpc+zmc+zinv+ztc-zscd-zscm-zscr+zco2ec-zsw
     z2=zfj+zvj
     return z1
-
-# %%
 #Cost function
 def calc_objective2(lst_pq):
     p_q=round(np.average(lst_pq))
@@ -561,7 +553,6 @@ def calc_objective2(lst_pq):
     z2=zfj+zvj
     return z2
 
-# %%
 # #Non dominated sorting
 # def NonDominatedSorting(pop):
 #     npop=len(pop)
@@ -574,19 +565,16 @@ def calc_objective2(lst_pq):
 #             q=pop(j)
 #             if 
 
-# %%
 # SEO Paramters
-maxit=10
+maxit=100
 alpha=0.7
 betta=0.5
 num_c=50
 
-# %%
 # Initialization
 persons={'Position':[],'Cost1':[],'Cost2': []}
 '''{'Position': [], 'Cost1': [],'Cost2': [], 'Rank': [], 'DominationSet': [], 'DominatedCount': [], 'CrowdingDistance': []}'''
 
-# %%
 for i in range(2):
     a=[]
     for i in range(nvar):
@@ -598,7 +586,6 @@ for i in range(2):
 persons_df=pd.DataFrame(persons)
 print(persons_df)
 
-# %%
 gamma=round(nvar*alpha)
 #tetta=np.zeros((nobj,gamma),dtype=np.int32)
 #sigma=0.1*varmax
@@ -606,8 +593,6 @@ gamma=round(nvar*alpha)
 # bestcost1=np.zeros((maxit,1),dtype=np.int64)
 # bestcost2=np.zeros((maxit,1),dtype=np.int64)
 # paretocost=np.zeros((maxit,1),dtype=np.int64)
-
-# %%
 #connect functions
 def connect_1(a_index,d_index,betta,varmin,varmax):
     a=random.random()
@@ -670,8 +655,6 @@ def connect_4(a_index,d_index,betta,varmin,varmax):
             z=min(c,varmax)
             y.append(z)
     return y
-
-# %%
 # # attacker_index=[x for x in range(2) if persons_df['Cost1'].iloc[x]<=persons_df['Cost2'].iloc[x]]
 for i in range(2):
     for j in range(2):
@@ -686,13 +669,6 @@ if attacker_index==0:
 else:
     defender_index=0
 print(attacker_index,defender_index)
-
-# %%
-check=np.random.randint(4,5,size=25)
-check
-
-
-# %%
 # SEO main loop
 paretoposition=[]
 paretocost1=[]
@@ -748,7 +724,10 @@ for it in range(2,maxit+1):
     paretocost=calc_objective2(persons_df['Position'].iloc[attacker_index])
     paretocost2.append(paretocost)
     print("Iteration no. ",it)
+    sno.append(it)
     # new random defender
-bestcost1=min(paretocost1)
-bestcost2=min(paretocost2)
-print(bestcost1,bestcost2)
+# bestcost1=min(paretocost1)
+# bestcost2=min(paretocost2)
+# print(bestcost1,bestcost2)
+plt.scatter(sno,paretocost1)
+plt.show()
